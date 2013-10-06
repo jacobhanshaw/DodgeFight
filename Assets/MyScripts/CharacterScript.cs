@@ -37,7 +37,7 @@ public class CharacterScript : MonoBehaviour {
   			sources[0].Play();
   			hitTextBar.GetComponent<TextMesh>().text = "Hits: " + timesHit;
   			blockTextBar.GetComponent<TextMesh>().text = "Blocks: " + timesPunched;
-  			DestroyImmediate(other.gameObject);
+  			Destroy(other.gameObject);
   		}
 	}
 	
