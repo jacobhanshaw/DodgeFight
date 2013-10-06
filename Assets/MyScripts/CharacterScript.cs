@@ -6,15 +6,20 @@ public class CharacterScript : MonoBehaviour {
 	private int timesHit = 0;
 	private int timesPunched = 0;
 	public GameObject statusTextBar;
+	public GameObject hitTextBar;
+	public GameObject blockTextBar;
 	public GameObject floor;
 	public GameObject invisibleWall;
 	
 	private TextRenderScript script;
+	private AudioSource[] sources;
 	
 	// Use this for initialization
 	void Start () 
 	{
 		script = statusTextBar.GetComponent<TextRenderScript>();
+		sources = gameObject.GetComponents<AudioSource>();
+		sources[0].pitch = 1.2f;
 	}
 	
 	// Update is called once per frame
@@ -28,9 +33,11 @@ public class CharacterScript : MonoBehaviour {
   		if(other.gameObject != floor && other.gameObject != invisibleWall)
   		{
   			timesHit++;
-  			script.allowTextToDisappear = true;
-  			script.DisplayText("Times Hit: " + timesHit);
-  			Destroy(other.gameObject);
+  			sources[0].Stop();
+  			sources[0].Play();
+  			hitTextBar.GetComponent<TextMesh>().text = "Hits: " + timesHit;
+  			blockTextBar.GetComponent<TextMesh>().text = "Blocks: " + timesPunched;
+  			DestroyImmediate(other.gameObject);
   		}
 	}
 	
@@ -38,15 +45,17 @@ public class CharacterScript : MonoBehaviour {
 	{
 		if(other.gameObject == invisibleWall)
 		{
-			script.allowTextToDisappear = false;
-  			script.DisplayText("Out of Bounds");
+			//script.allowTextToDisappear = true;
+  			//script.DisplayText("Out of Bounds");
 		}
 	}
 	
 	public void PunchReceived()
 	{
 		timesPunched++;
-  		script.allowTextToDisappear = true;
-  		script.DisplayText("Times Punched: " + timesPunched);
+		sources[1].Stop();
+		sources[1].Play();
+  		hitTextBar.GetComponent<TextMesh>().text = "Hits: " + timesHit;
+  		blockTextBar.GetComponent<TextMesh>().text = "Blocks: " + timesPunched;
 	}
 }

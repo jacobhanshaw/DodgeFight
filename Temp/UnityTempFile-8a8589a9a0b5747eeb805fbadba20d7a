@@ -41,6 +41,7 @@
 'Assets/MyScripts/CharacterScript.cs'
 'Assets/MyScripts/CoreLogic.cs'
 'Assets/MyScripts/MassLauncherScript.cs'
+'Assets/MyScripts/PassOnCollision.cs'
 'Assets/OVR/OVRImageEffects/OVRImageEffectBase.cs'
 'Assets/OVR/OVRImageEffects/OVRLensCorrection.cs'
 'Assets/OVR/Scripts/OVRCamera.cs'

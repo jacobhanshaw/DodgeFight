@@ -11,6 +11,8 @@ public class BulletProperties : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
+		AudioSource source = gameObject.GetComponent<AudioSource>();
+		source.pitch = 0.25f;
 	//	gameObject.collider.enabled = false;
 	}
 	
@@ -24,7 +26,7 @@ public class BulletProperties : MonoBehaviour {
 	
 	void OnCollisionEnter(Collision collision) 
 	{
-		Debug.Log("Fuck");
 		Destroy(gameObject);
 	}
+	
 }
