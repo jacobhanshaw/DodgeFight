@@ -29,4 +29,8 @@ public class BulletProperties : MonoBehaviour {
 		Destroy(gameObject);
 	}
 	
+	void OnTriggerEnter(Collider other)
+	{
+		//Destroy(gameObject);
+	}
 }

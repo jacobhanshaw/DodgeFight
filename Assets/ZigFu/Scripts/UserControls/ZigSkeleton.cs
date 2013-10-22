@@ -44,7 +44,7 @@ public class ZigSkeleton : MonoBehaviour
 
     public Vector3 PositionBias = Vector3.zero;
 
-    private Transform[] transforms;
+    public Transform[] transforms;
     private Quaternion[] initialRotations;
     private Vector3 rootPosition;
 

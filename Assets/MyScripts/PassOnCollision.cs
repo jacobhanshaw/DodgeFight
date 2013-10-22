@@ -19,7 +19,7 @@ public class PassOnCollision : MonoBehaviour {
 	
 	void OnCollisionEnter(Collision collision) 
 	{
-		DestroyImmediate(collision.gameObject);
-		script.PunchReceived();
+		Destroy(collision.gameObject);
+		script.BlockReceived();
 	}
 }

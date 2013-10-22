@@ -44,14 +44,14 @@ public class BulletLauncherBehavior : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider other)
 	{
-	/*	if(other.gameObject.tag.Equals("Bullet"))
+		if(other.gameObject.tag.Equals("Bullet"))
 		{
-			BulletProperties script = other.gameObject.GetComponent<BulletProperties>();
-			if(script.creatorId == localId)
+			BulletProperties bulletScript = other.gameObject.GetComponent<BulletProperties>();
+			if(bulletScript.creatorId == localId)
 				return;
 		} 
 		
-  		Destroy(gameObject); */
+  		Destroy(gameObject); 
 	}
 	
 	public void LaunchBullet(float bulletVelocity, float bulletLifetime)
