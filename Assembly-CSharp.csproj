@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\GestureRecognizer.cs" />
+     <Compile Include="Assets\ImpactBehavior.cs" />
      <Compile Include="Assets\MyScripts\BulletLauncherBehavior.cs" />
      <Compile Include="Assets\MyScripts\BulletProperties.cs" />
      <Compile Include="Assets\MyScripts\CharacterScript.cs" />

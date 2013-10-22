@@ -6,6 +6,7 @@ public class CharacterScript : MonoBehaviour {
 	private int timesHit = 0;
 	private int ammo = 0;
 	public GameObject bulletPrefab;
+	public GameObject wallPrefab;
 	public CoreLogic  CoreLogicScript;
 	public GameObject statusTextBar;
 	public GameObject hitTextBar;
@@ -70,10 +71,56 @@ public class CharacterScript : MonoBehaviour {
 		}
 	}
 	
+	public void StompReceived(Transform ankleLocation)
+	{
+		//Debug.Log("Stomp Received");
+		//Debug.Log("Stomp Position: " + ankleLocation);
+		//float angle = (Mathf.Atan(-ankleLocation.position.z/ankleLocation.position.x) * Mathf.Rad2Deg);// + 90.0f;
+		//hitTextBar.GetComponent<TextMesh>().text = "Angle: " + ((int)angle);
+		//Debug.Log("Stomp Angle " + angle);
+		Vector3 wallPosition;
+		Vector3 wallRotation;
+		if(ammo >= 5)
+		{
+		ammo -= 5;
+	//	if(angle < 22.5)
+	//	{
+			wallPosition = new Vector3(4.5f, 1.341022f, 0.0f);
+			wallRotation = new Vector3(0.0f, 90.0f, 0.0f);
+			GameObject wall0 = (GameObject)Instantiate(wallPrefab, wallPosition, Quaternion.Euler(wallRotation.x, wallRotation.y, wallRotation.z));
+	//	}
+	//	else if(angle >= 22.5 && angle < 67.5)
+	//	{
+			wallPosition = new Vector3(3.5f, 1.341022f, -3.5f);
+			wallRotation = new Vector3(0.0f, -45.0f, 0.0f);
+			GameObject wall1 = (GameObject)Instantiate(wallPrefab, wallPosition, Quaternion.Euler(wallRotation.x, wallRotation.y, wallRotation.z));
+	//	}
+	//	else if(angle >= 67.5 && angle < 112.5)
+	//	{
+			wallPosition = new Vector3(0.0f, 1.341022f, -4.5f);
+			wallRotation = new Vector3(0.0f, 0.0f, 0.0f);
+			GameObject wall2 = (GameObject)Instantiate(wallPrefab, wallPosition, Quaternion.Euler(wallRotation.x, wallRotation.y, wallRotation.z));
+	//	}
+	//	else if(angle >= 112.5 && angle < 157.5)
+	//	{
+			wallPosition = new Vector3(-3.5f, 1.341022f, -3.5f);
+			wallRotation = new Vector3(0.0f, 45.0f, 0.0f);
+			GameObject wall3 = (GameObject)Instantiate(wallPrefab, wallPosition, Quaternion.Euler(wallRotation.x, wallRotation.y, wallRotation.z));
+	//	}
+	//	else
+	//	{
+			wallPosition = new Vector3(-4.5f, 1.341022f, 0.0f);
+			wallRotation = new Vector3(0.0f, 90.0f, 0.0f);
+			GameObject wall4 = (GameObject)Instantiate(wallPrefab, wallPosition, Quaternion.Euler(wallRotation.x, wallRotation.y, wallRotation.z));
+	//	}
+	}
+		
+	}
+	
 	public void UpdateUI(float a, float b)
 	{
-		hitTextBar.GetComponent<TextMesh>().text = "Left Arm Angle: " + ((int)a);
-  		blockTextBar.GetComponent<TextMesh>().text = "Right Arm Angle " + ((int)b);
+	//	hitTextBar.GetComponent<TextMesh>().text = "Left Leg Angle: " + ((int)a);
+  	//	blockTextBar.GetComponent<TextMesh>().text = "Right Leg Angle " + ((int)b);
 	}
 	
 	public void LaunchBullet(float bulletVelocity, float bulletLifetime, Transform fistLocation, bool left)
@@ -93,7 +140,7 @@ public class CharacterScript : MonoBehaviour {
 	
 	private void UpdateUI()
 	{
-		//hitTextBar.GetComponent<TextMesh>().text = "Hits: " + timesHit;
-  		//blockTextBar.GetComponent<TextMesh>().text = "Ammo: " + ammo;
+		hitTextBar.GetComponent<TextMesh>().text = "Hits: " + timesHit;
+  		blockTextBar.GetComponent<TextMesh>().text = "Ammo: " + ammo;
 	}
 }

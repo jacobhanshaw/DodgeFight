@@ -11,7 +11,12 @@ public class CoreLogic : MonoBehaviour {
 	public float bulletLifetime = 16.0f; 
 	
 	public float initialDelayTime = 5.0f;
+	
+	public TextRenderScript script;
+	public GameObject launchersPrefab;
+	
 	private bool waitedInitialDelay = false;
+	
 	
 	// Use this for initialization
 	void Start () 
@@ -25,11 +30,21 @@ public class CoreLogic : MonoBehaviour {
 		timeSinceLastLaunch += Time.deltaTime;
 		
 		if(waitedInitialDelay)
+		{
+			ArrayList launchers = new ArrayList(GameObject.FindGameObjectsWithTag ("Launcher"));
+			
+			if(launchers.Count == 0)
 			{
+				++level;
+				staggered = level % 2 == 0;
+				GameObject launcherObjects = (GameObject)Instantiate(launchersPrefab, Vector3.zero, Quaternion.identity);
+				script.allowTextToDisappear = true;
+  				script.DisplayText("Welcome to Level: " + (level - 1));
+			}
+			
 			if(timeSinceLastLaunch > timeBetweenLaunches || (staggered && timeSinceLastLaunch > timeBetweenLaunches/(float)level))
 			{
 				timeSinceLastLaunch = 0.0f;
-				ArrayList launchers = new ArrayList(GameObject.FindGameObjectsWithTag ("Launcher")); //.GetComponent(GUIButtons).test
 		
 				for(int i = 0; i < (staggered ? 1 : level); ++i)
 				{
@@ -39,14 +54,14 @@ public class CoreLogic : MonoBehaviour {
 					launchers.Remove(launcherIndex);
 				}
 			}
-			}
-			else
+		}
+		else
+		{
+			if(timeSinceLastLaunch > initialDelayTime)
 			{
-				if(timeSinceLastLaunch > initialDelayTime)
-				{
-					timeSinceLastLaunch = 0.0f;
-					waitedInitialDelay = true;
-				}
+				timeSinceLastLaunch = 0.0f;
+				waitedInitialDelay = true;
 			}
+		}
 	}
 }
