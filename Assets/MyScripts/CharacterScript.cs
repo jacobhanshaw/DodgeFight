@@ -4,7 +4,7 @@ using System.Collections;
 public class CharacterScript : MonoBehaviour {
 	
 	private int timesHit = 0;
-	private int ammo = 0;
+	private int ammo = 200;
 	public GameObject bulletPrefab;
 	public GameObject wallPrefab;
 	public CoreLogic  CoreLogicScript;
@@ -119,8 +119,8 @@ public class CharacterScript : MonoBehaviour {
 	
 	public void UpdateUI(float a, float b)
 	{
-	//	hitTextBar.GetComponent<TextMesh>().text = "Left Leg Angle: " + ((int)a);
-  	//	blockTextBar.GetComponent<TextMesh>().text = "Right Leg Angle " + ((int)b);
+		hitTextBar.GetComponent<TextMesh>().text = "A: " + a;
+  		blockTextBar.GetComponent<TextMesh>().text = "B: " + b;
 	}
 	
 	public void LaunchBullet(float bulletVelocity, float bulletLifetime, Transform fistLocation, bool left)
@@ -138,9 +138,9 @@ public class CharacterScript : MonoBehaviour {
 		Destroy(bullet, bulletLifetime);
 	}
 	
-	private void UpdateUI()
+	public void UpdateUI()
 	{
-		hitTextBar.GetComponent<TextMesh>().text = "Hits: " + timesHit;
-  		blockTextBar.GetComponent<TextMesh>().text = "Ammo: " + ammo;
+	//	hitTextBar.GetComponent<TextMesh>().text = "Hits: " + timesHit;
+  	//	blockTextBar.GetComponent<TextMesh>().text = "Ammo: " + ammo;
 	}
 }

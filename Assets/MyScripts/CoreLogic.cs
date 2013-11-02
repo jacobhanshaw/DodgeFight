@@ -8,7 +8,7 @@ public class CoreLogic : MonoBehaviour {
 	public float timeBetweenLaunches = 3.0f;
 	public float timeSinceLastLaunch = 0.0f;
 	public float bulletVelocity = 800.0f;
-	public float bulletLifetime = 16.0f; 
+	public float bulletLifetime = 12.0f; 
 	
 	public float initialDelayTime = 5.0f;
 	
@@ -42,11 +42,13 @@ public class CoreLogic : MonoBehaviour {
   				script.DisplayText("Welcome to Level: " + (level - 1));
 			}
 			
-			if(timeSinceLastLaunch > timeBetweenLaunches || (staggered && timeSinceLastLaunch > timeBetweenLaunches/(float)level))
+			int numToLaunch = Mathf.Min(level, launchers.Count);
+			
+			if(timeSinceLastLaunch > timeBetweenLaunches || (staggered && timeSinceLastLaunch > timeBetweenLaunches/(float)numToLaunch))
 			{
 				timeSinceLastLaunch = 0.0f;
 		
-				for(int i = 0; i < (staggered ? 1 : level); ++i)
+				for(int i = 0; i < (staggered ? 1 : numToLaunch); ++i)
 				{
 					int launcherIndex = Random.Range(0, launchers.Count);
 					BulletLauncherBehavior launchScript = ((GameObject)launchers[launcherIndex]).GetComponent<BulletLauncherBehavior>();
