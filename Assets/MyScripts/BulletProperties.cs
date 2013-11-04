@@ -33,4 +33,5 @@ public class BulletProperties : MonoBehaviour {
 	{
 		//Destroy(gameObject);
 	}
+	
 }

@@ -3,30 +3,42 @@ using System.Collections;
 
 public class GestureRecognizer : MonoBehaviour 
 {
-	//public ZigSkeleton zigScript;
 	public CharacterScript script;
+	public CoreLogic  CoreLogicScript;
 	
+	//PUNCH VARIABLES
 	int punchStateLeft = 0;
 	float punchLeftStartTime = 0;
 	int punchStateRight = 0;
 	float punchRightStartTime = 0;
-	
-	float startArmDistance = 0.3f;
-	float stopArmDistance = 0.543f;
-	float punchStartAngle = 40.0f;
-	float punchEndAngle = 165.0f;
+	float startArmDistance = 0.3f * 0.3f;
+	float stopArmDistance = 0.543f * 0.453f;
+	//float punchStartAngle = 40.0f;
+	//float punchEndAngle = 165.0f;
 	float maxPunchTime = 0.75f;
+	
+	//CHARGE VARIABLES
+	int   chargeState = 0;
+	float chargeHandDistance = 0.2f * 0.2f;
 
+	//JUMP VARIABLES
+	float floorHeight = float.MaxValue;
+	float minJumpHeight = 0.5f;
+	int  jumpState = 0;
+	float jumpSpeed = 0.2f;
+	float jumpStartTime = 0.0f;
+	float jumpTime = 0.5f;
+	float hangTime = 1.0f;
 	
 	int stompStateLeft = 0;
 	float stompLeftStartTime = 0;
 	int stompStateRight = 0;
 	float stompRightStartTime = 0;
 	
-	float startLegDistance = 0.6f;
-	float stopLegDistance = 0.78f;
-	float stompStartAngle = 70.0f;
-	float stompEndAngle = 160.0f;
+	float startLegDistance = 0.6f * 0.6f;
+	float stopLegDistance = 0.78f * 0.78f;
+	//float stompStartAngle = 70.0f;
+	//float stompEndAngle = 160.0f;
 	float maxStompTime = 1.5f;
 	
 	public Transform Head;
@@ -34,29 +46,22 @@ public class GestureRecognizer : MonoBehaviour
     public Transform Torso;
     public Transform Waist;
 
-    // public Transform LeftCollar;
+
     public Transform LeftShoulder;
     public Transform LeftElbow;
     public Transform LeftWrist;
-    // public Transform LeftHand;
-    // public Transform LeftFingertip;
 
-    // public Transform RightCollar;
     public Transform RightShoulder;
     public Transform RightElbow;
     public Transform RightWrist;
-    // public Transform RightHand;
-    // public Transform RightFingertip;
 
     public Transform LeftHip;
     public Transform LeftKnee;
     public Transform LeftAnkle;
-    // public Transform LeftFoot;
 
     public Transform RightHip;
     public Transform RightKnee;
     public Transform RightAnkle;
-    // public Transform RightFoot;
 	
 	// Use this for initialization
 	void Start () 
@@ -65,32 +70,55 @@ public class GestureRecognizer : MonoBehaviour
 	//	maxLeftArmDistance  *= gameObject.transform.localScale.x;
 	//	minRightArmDistance *= gameObject.transform.localScale.x;
 	//	maxRightArmDistance *= gameObject.transform.localScale.x;
+	
+		floorHeight = script.gameObject.transform.position.y;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
+		CheckForCharge();
 		CheckForPunch();
-		CheckForStomp();
+	//	bool jump = CheckForJump(); DO DIFFERENTLY, USE GESTURE RECOGNIZER
+	//	if(!jump)
+			CheckForStomp();
+	}
+	
+	void CheckForCharge()
+	{
+		switch(chargeState)
+		{
+			case(0):
+				if(GetDistanceSquared(RightWrist.transform, LeftWrist.transform) < chargeHandDistance)
+				{
+					CoreLogicScript.chargeTime = Time.deltaTime;
+					++chargeState;
+				}
+			break;
+			case(1):
+				if(GetDistanceSquared(RightWrist.transform, LeftWrist.transform) < chargeHandDistance)
+					CoreLogicScript.chargeTime += Time.deltaTime;
+			break;
+		}
+		
+		//script.UpdateUI(Vector3.Distance(RightWrist.transform.position, LeftWrist.transform.position), chargeTime);
 	}
 	
 	void CheckForPunch ()
 	{
-		//Debug.Log("Left State: " + punchStateLeft);
-		//Debug.Log("Right State: " + punchStateRight);
-		
-		float leftWristToShoulderAngle = AngleBetweenTransformsGivenPivot(LeftShoulder, LeftWrist, LeftElbow);
-		float rightWristToShoulderAngle = AngleBetweenTransformsGivenPivot(RightShoulder, RightWrist, RightElbow);
-		
-		//script.UpdateUI(leftWristToShoulderAngle, rightWristToShoulderAngle);
+	//	float leftWristToShoulderAngle = AngleBetweenTransformsGivenPivot(LeftShoulder, LeftWrist, LeftElbow);
+	//	float rightWristToShoulderAngle = AngleBetweenTransformsGivenPivot(RightShoulder, RightWrist, RightElbow);
 		
 		//script.UpdateUI(Vector3.Distance(LeftShoulder.transform.position, LeftWrist.transform.position), Vector3.Distance(RightShoulder.transform.position, RightWrist.transform.position));
-						
+		
+		float leftShoulderWristDistanceSquared = GetDistanceSquared(LeftShoulder.transform, LeftWrist.transform);
+		float rightShoulderWristDistanceSquared = GetDistanceSquared(RightShoulder.transform, RightWrist.transform);
+																						
 		switch(punchStateLeft)
 		{
 			case(0):
 				//if(leftWristToShoulderAngle <= punchStartAngle || 
-				if(GetDistanceSquared(LeftShoulder.transform, LeftWrist.transform) < startArmDistance * startArmDistance)
+				if(leftShoulderWristDistanceSquared < startArmDistance)
 				{
 					punchLeftStartTime = Time.time;
 					++punchStateLeft;
@@ -100,10 +128,10 @@ public class GestureRecognizer : MonoBehaviour
 				if(Time.time - punchLeftStartTime <= maxPunchTime)
 				{
 					//if(leftWristToShoulderAngle <= punchStartAngle || 
-					if(GetDistanceSquared(LeftShoulder.transform, LeftWrist.transform) < startArmDistance * startArmDistance)
+					if(leftShoulderWristDistanceSquared < startArmDistance)
 						punchLeftStartTime = Time.time;
 					//else if(leftWristToShoulderAngle >= punchEndAngle || 
-					else if(GetDistanceSquared(LeftShoulder.transform, LeftWrist.transform) > stopArmDistance * stopArmDistance)
+					else if(leftShoulderWristDistanceSquared > stopArmDistance)
 					{
 						punchStateLeft = 0;
 						script.PunchReceived(LeftWrist, true);
@@ -118,7 +146,7 @@ public class GestureRecognizer : MonoBehaviour
 		{
 			case(0):
 				//if(rightWristToShoulderAngle <= punchStartAngle || 
-				if(GetDistanceSquared(RightShoulder.transform, RightWrist.transform) < startArmDistance * startArmDistance)
+				if(rightShoulderWristDistanceSquared < startArmDistance)
 				{
 					punchRightStartTime = Time.time;
 					++punchStateRight;
@@ -128,10 +156,10 @@ public class GestureRecognizer : MonoBehaviour
 				if(Time.time - punchRightStartTime <= maxPunchTime)
 				{
 					//if(rightWristToShoulderAngle <= punchStartAngle || 
-					if(GetDistanceSquared(RightShoulder.transform, RightWrist.transform) < startArmDistance * startArmDistance)
+					if(rightShoulderWristDistanceSquared < startArmDistance)
 						punchRightStartTime = Time.time;
 					//else if(rightWristToShoulderAngle >= punchEndAngle || 
-					else if(GetDistanceSquared(RightShoulder.transform, RightWrist.transform) > stopArmDistance * stopArmDistance)
+					else if(rightShoulderWristDistanceSquared > stopArmDistance)
 					{
 						punchStateRight = 0;
 						script.PunchReceived(RightWrist, false);
@@ -143,18 +171,64 @@ public class GestureRecognizer : MonoBehaviour
 		}
 	}
 	
+	bool CheckForJump()
+	{
+		floorHeight = Mathf.Min(floorHeight, transform.position.y);
+		
+		switch(jumpState)
+		{
+			case(0):
+			if(transform.position.y - floorHeight > minJumpHeight)
+			{
+				jumpStartTime = Time.time;
+				transform.position += transform.up * jumpSpeed * Time.deltaTime;
+				++jumpState;
+			}
+			break;
+			case(1):
+			if(Time.time - jumpStartTime < jumpTime)
+			{
+				transform.position += transform.up * jumpSpeed * Time.deltaTime;
+			}
+			else
+				++jumpState;
+			break;
+			case(2):
+			if(!(Time.time - jumpStartTime < jumpTime + hangTime))
+				++jumpState;
+			break;
+			case(3):
+			if(Time.time - jumpStartTime < 2 * jumpTime + hangTime)
+			{
+				transform.position -= transform.up * jumpSpeed * Time.deltaTime;
+			}
+			else
+			{
+				jumpState = 0;
+				transform.position = transform.up * floorHeight;	
+			}
+			break;
+		}
+		
+		script.UpdateUI(transform.position.y, floorHeight);
+		
+		return jumpState != 0;
+	}
+	
 	void CheckForStomp ()
 	{
-		float leftFootToHipAngle = AngleBetweenTransformsGivenPivot(LeftHip, LeftAnkle, LeftKnee);
-		float rightFootToHipAngle = AngleBetweenTransformsGivenPivot(RightHip, RightAnkle, RightKnee);
+	//	float leftFootToHipAngle = AngleBetweenTransformsGivenPivot(LeftHip, LeftAnkle, LeftKnee);
+	//	float rightFootToHipAngle = AngleBetweenTransformsGivenPivot(RightHip, RightAnkle, RightKnee);
 		
-//		script.UpdateUI(leftFootToHipAngle, rightFootToHipAngle);
 	//	script.UpdateUI(Vector3.Distance(LeftHip.transform.position, LeftAnkle.transform.position), Vector3.Distance(RightHip.transform.position, RightAnkle.transform.position));
+		float leftHipAnkleDistanceSquared = GetDistanceSquared(LeftHip.transform, LeftAnkle.transform);
+		float rightHipAnkleDistanceSquared = GetDistanceSquared(RightHip.transform, RightAnkle.transform);
+		
 		switch(stompStateLeft)
 		{
 			case(0):
 				//if(leftFootToHipAngle <= stompStartAngle || 
-				if(GetDistanceSquared(LeftHip.transform, LeftAnkle.transform) < startLegDistance * startLegDistance)
+				if(leftHipAnkleDistanceSquared < startLegDistance)
 				{
 					stompLeftStartTime = Time.time;
 					++stompStateLeft;
@@ -164,10 +238,10 @@ public class GestureRecognizer : MonoBehaviour
 				if(Time.time - stompLeftStartTime <= maxStompTime)
 				{
 					//if(leftFootToHipAngle <= stompStartAngle || 
-					if(GetDistanceSquared(LeftHip.transform, LeftAnkle.transform) < startLegDistance * startLegDistance)
+					if(leftHipAnkleDistanceSquared < startLegDistance)
 						stompLeftStartTime = Time.time;
 					//else if(leftFootToHipAngle >= stompEndAngle || 
-					else if(GetDistanceSquared(LeftHip.transform, LeftAnkle.transform) > stopLegDistance * stopLegDistance)
+					else if(leftHipAnkleDistanceSquared > stopLegDistance)
 					{
 						stompStateLeft = 0;
 						script.StompReceived(LeftAnkle);
@@ -182,7 +256,7 @@ public class GestureRecognizer : MonoBehaviour
 		{
 			case(0):
 				//if(rightFootToHipAngle <= stompStartAngle || 
-				if(GetDistanceSquared(RightHip.transform, RightAnkle.transform) < startLegDistance * startLegDistance)
+				if(rightHipAnkleDistanceSquared < startLegDistance)
 				{
 					stompRightStartTime = Time.time;
 					++stompStateRight;
@@ -191,11 +265,12 @@ public class GestureRecognizer : MonoBehaviour
 			case(1):
 				if(Time.time - stompRightStartTime <= maxStompTime)
 				{
+					
 					//if(rightFootToHipAngle <= stompStartAngle || 
-					if(GetDistanceSquared(RightHip.transform, RightAnkle.transform) < startLegDistance * startLegDistance)
+					if(rightHipAnkleDistanceSquared < startLegDistance)
 						stompRightStartTime = Time.time;
 					//else if(rightFootToHipAngle >= stompEndAngle || 
-					else if(GetDistanceSquared(RightHip.transform, RightAnkle.transform) > stopLegDistance * stopLegDistance)
+					else if(rightHipAnkleDistanceSquared > stopLegDistance)
 					{
 						stompStateRight = 0;
 						script.StompReceived(RightAnkle);

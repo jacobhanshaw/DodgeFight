@@ -47,8 +47,11 @@ public class BulletLauncherBehavior : MonoBehaviour {
 		if(other.gameObject.tag.Equals("Bullet"))
 		{
 			BulletProperties bulletScript = other.gameObject.GetComponent<BulletProperties>();
-			if(bulletScript.creatorId == localId)
-				return;
+			if(bulletScript)
+			{
+				if(bulletScript.creatorId == localId)
+					return;
+			}
 		} 
 		
   		Destroy(gameObject); 

@@ -73,16 +73,12 @@ public class CharacterScript : MonoBehaviour {
 	
 	public void StompReceived(Transform ankleLocation)
 	{
-		//Debug.Log("Stomp Received");
-		//Debug.Log("Stomp Position: " + ankleLocation);
-		//float angle = (Mathf.Atan(-ankleLocation.position.z/ankleLocation.position.x) * Mathf.Rad2Deg);// + 90.0f;
-		//hitTextBar.GetComponent<TextMesh>().text = "Angle: " + ((int)angle);
-		//Debug.Log("Stomp Angle " + angle);
 		Vector3 wallPosition;
 		Vector3 wallRotation;
 		if(ammo >= 5)
 		{
 		ammo -= 5;
+		UpdateUI();
 	//	if(angle < 22.5)
 	//	{
 			wallPosition = new Vector3(4.5f, 1.341022f, 0.0f);
@@ -128,12 +124,17 @@ public class CharacterScript : MonoBehaviour {
 		Vector3 trueForward = fistLocation.right;
 		if(left)
 			trueForward *= -1;
-
-		GameObject bullet = (GameObject)Instantiate(bulletPrefab, fistLocation.position + trueForward.normalized, Quaternion.identity);//fistLocation.rotation);
-		BulletProperties bulletScript = bullet.GetComponent<BulletProperties>();
-		bulletScript.creatorId = -5;
+			
+		Vector3 initLocation = fistLocation.position + trueForward.normalized;
+		initLocation += trueForward.normalized * (CoreLogicScript.chargeTime/3);
+		
+		GameObject bullet = (GameObject)Instantiate(bulletPrefab, initLocation, Quaternion.identity);//fistLocation.rotation);
+		FireballProperties bulletScript = bullet.GetComponent<FireballProperties>();
+		bulletScript.Scale(CoreLogicScript.chargeTime/3);
+		CoreLogicScript.chargeTime = 0.0f;
 		//TODO: Possibly Make Use of Creator Id
 		bullet.rigidbody.AddForce(trueForward.normalized * 800);
+		Debug.Log("RigidBody: " + bullet.rigidbody);
 
 		Destroy(bullet, bulletLifetime);
 	}

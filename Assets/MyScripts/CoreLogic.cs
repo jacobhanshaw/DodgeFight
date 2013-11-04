@@ -10,6 +10,8 @@ public class CoreLogic : MonoBehaviour {
 	public float bulletVelocity = 800.0f;
 	public float bulletLifetime = 12.0f; 
 	
+	public float chargeTime = 0.0f;
+	
 	public float initialDelayTime = 5.0f;
 	
 	public TextRenderScript script;
