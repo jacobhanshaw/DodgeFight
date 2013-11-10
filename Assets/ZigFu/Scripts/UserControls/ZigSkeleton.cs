@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public class ZigSkeleton : MonoBehaviour
 {
+	public GestureRecognizer gestureScript;
+
     public Transform Head;
     public Transform Neck;
     public Transform Torso;
@@ -94,7 +96,6 @@ public class ZigSkeleton : MonoBehaviour
             case ZigJointId.RightFoot:
                 return ZigJointId.LeftFoot;
 
-
             default:
                 return joint;
         }
@@ -165,6 +166,7 @@ public class ZigSkeleton : MonoBehaviour
         if (UpdateRootPosition)
         {
             transform.localPosition = (transform.rotation * rootPosition);
+            gestureScript.RootUpdate(rootPosition);
         }
     }
 

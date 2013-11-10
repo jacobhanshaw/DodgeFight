@@ -2,7 +2,10 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Zig : MonoBehaviour {
+public class Zig : MonoBehaviour 
+{
+	public GestureRecognizer gestureScript;
+
     public ZigInputType inputType = ZigInputType.Auto;
     //public bool UpdateDepthmap = true;
     //public bool UpdateImagemap = false;
@@ -45,17 +48,22 @@ public class Zig : MonoBehaviour {
         }
     }
 
-    void Zig_UserFound(ZigTrackedUser user) {
+    void Zig_UserFound(ZigTrackedUser user) 
+    {
+    	gestureScript.NewUserFound();
+    
         if (Verbose) Debug.Log("Zig: Found user  " + user.Id);
         notifyListeners("Zig_UserFound", user);
     }
 
-    void Zig_UserLost(ZigTrackedUser user) {
+    void Zig_UserLost(ZigTrackedUser user) 
+    {
         if (Verbose) Debug.Log("Zig: Lost user " + user.Id);
         notifyListeners("Zig_UserLost", user);
     }
 
-    void Zig_Update(ZigInput zig) {
+    void Zig_Update(ZigInput zig) 
+    {
         notifyListeners("Zig_Update", zig);
     }
   

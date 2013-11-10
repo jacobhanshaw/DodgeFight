@@ -1,32 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BulletLauncherBehavior : MonoBehaviour {
-	
-	public  static int topId = 1;
-	private int localId;
-	
+public class BulletLauncherBehavior : MonoBehaviour 
+{	
 	public  bool  controlled = true;
 	public  float bulletVelocityLocal = 250.0f;
 	public  float bulletLifetimeLocal = 2.0f;
 	public  float timeBetweenLaunches = 5.0f;
-	
 	private float timeSinceLastLaunch = 0.0f;
 	
-	public  GameObject bulletPrefab;
-	// Use this for initialization
+	private float burnTime = 1.5f;
+	private float boxTime = 1.0f;
 	
-	void Awake ()
-	{
-		localId = topId++;
-	}
+	public  GameObject bulletPrefab;
+	public  GameObject destructionBurnPrefab;
+	
 	
 	void Start () 
 	{
 
 	}
 	
-	// Update is called once per frame
 	void Update () 
 	{
 		if(!controlled)
@@ -49,19 +43,23 @@ public class BulletLauncherBehavior : MonoBehaviour {
 			BulletProperties bulletScript = other.gameObject.GetComponent<BulletProperties>();
 			if(bulletScript)
 			{
-				if(bulletScript.creatorId == localId)
+				if(bulletScript.creatorId == gameObject.GetInstanceID())
 					return;
 			}
 		} 
 		
-  		Destroy(gameObject); 
+		GameObject fire = (GameObject)Instantiate(destructionBurnPrefab, gameObject.transform.position, Quaternion.identity);
+		
+  		Destroy(gameObject, boxTime);
+  		Destroy(fire, burnTime);
 	}
 	
 	public void LaunchBullet(float bulletVelocity, float bulletLifetime)
 	{
 		GameObject bullet = (GameObject)Instantiate(bulletPrefab, gameObject.transform.position, gameObject.transform.rotation);
+		Physics.IgnoreCollision(gameObject.collider, bullet.collider);
 		BulletProperties script = bullet.GetComponent<BulletProperties>();
-		script.creatorId = localId;
+		script.creatorId = gameObject.GetInstanceID();
 		bullet.rigidbody.AddForce(gameObject.transform.forward * bulletVelocity);
 		Destroy(bullet, bulletLifetime);
 	}

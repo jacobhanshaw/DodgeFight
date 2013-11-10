@@ -8,15 +8,12 @@ public class BulletProperties : MonoBehaviour {
 	
 	private float timeSinceCreate = 0.0f;
 	
-	// Use this for initialization
 	void Start () 
 	{
 		AudioSource source = gameObject.GetComponent<AudioSource>();
 		source.pitch = 0.25f;
-	//	gameObject.collider.enabled = false;
 	}
 	
-	// Update is called once per frame
 	void Update () 
 	{
 		timeSinceCreate += Time.deltaTime;
@@ -30,8 +27,9 @@ public class BulletProperties : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter(Collider other)
-	{
-		//Destroy(gameObject);
+	{	
+		if(other.GetInstanceID() != creatorId)
+			Destroy(gameObject);
 	}
 	
 }
