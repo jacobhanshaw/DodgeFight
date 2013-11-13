@@ -17,9 +17,10 @@ public class GestureRecognizer : MonoBehaviour
 	float maxPunchTime = 0.5f;
 	
 	//CHARGE VARIABLES
-	int   chargeState = 0;
+	bool  wasCharging;
 	float chargeTimeDivider = 3.0f;
 	float chargeHandDistance = 0.2f * 0.2f;
+	float maxChargeTime = 4.75f;
 
 	//JUMP VARIABLES
 	Vector3 floorRootPosition;
@@ -66,7 +67,7 @@ public class GestureRecognizer : MonoBehaviour
 	
 	void Start () 
 	{
-	
+		script.SetUpVariables(maxChargeTime);
 	}
 	
 	void Update () 
@@ -104,25 +105,28 @@ public class GestureRecognizer : MonoBehaviour
 	
 	void CheckForCharge()
 	{
-		switch(chargeState)
+		if(GetDistanceSquared(RightWrist.transform, LeftWrist.transform) < chargeHandDistance)
 		{
-			case(0):
-				if(GetDistanceSquared(RightWrist.transform, LeftWrist.transform) < chargeHandDistance)
-				{
-					script.leftChargeTime = Time.deltaTime/chargeTimeDivider;
-					script.rightChargeTime = Time.deltaTime/chargeTimeDivider;
-					++chargeState;
-				}
-			break;
-			case(1):
-				if(GetDistanceSquared(RightWrist.transform, LeftWrist.transform) < chargeHandDistance)
-				{
-					script.leftChargeTime += Time.deltaTime/chargeTimeDivider;
-					script.rightChargeTime += Time.deltaTime/chargeTimeDivider;
-				}
-			break;
+			if(!wasCharging)
+			{
+				wasCharging = true;
+				script.StartedCharging();
+			}
+			script.leftChargeTime += Time.deltaTime/chargeTimeDivider;
+			if(script.leftChargeTime > maxChargeTime)
+				cript.leftChargeTime = maxChargeTime;
+			script.rightChargeTime += Time.deltaTime/chargeTimeDivider;
+			if(script.rightChargeTime > maxChargeTime)
+				cript.rightChargeTime = maxChargeTime;
 		}
-		
+		else
+		{
+			if(wasCharging)
+			{
+				wasCharging = false;
+				script.StoppedCharging();
+			}
+		}
 	}
 	
 	void CheckForPunch ()
