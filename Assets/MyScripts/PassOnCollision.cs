@@ -22,4 +22,10 @@ public class PassOnCollision : MonoBehaviour {
 		Destroy(collision.gameObject);
 		script.BlockReceived();
 	}
+	
+	void OnTriggerEnter(Collider other) 
+	{
+		Destroy(other.gameObject);
+		script.BlockReceived();
+	}
 }

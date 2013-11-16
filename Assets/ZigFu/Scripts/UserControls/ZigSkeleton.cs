@@ -166,7 +166,7 @@ public class ZigSkeleton : MonoBehaviour
         if (UpdateRootPosition)
         {
             transform.localPosition = (transform.rotation * rootPosition);
-            gestureScript.RootUpdate(rootPosition);
+            gestureScript.RootUpdate(transform.localPosition);
         }
     }
 

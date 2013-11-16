@@ -19,14 +19,13 @@ public class GestureRecognizer : MonoBehaviour
 	//CHARGE VARIABLES
 	bool  wasCharging;
 	float chargeTimeDivider = 3.0f;
-	float chargeHandDistance = 0.2f * 0.2f;
-	float maxChargeTime = 4.75f;
-
+	float chargeHandDistance = 0.24f * 0.24f;
+	
 	//JUMP VARIABLES
 	Vector3 floorRootPosition;
 	Vector3 currentRootPosition;
 	float jumpStartTime = 0.0f;
-	float minJumpHeight = 0.15f;
+	float minJumpHeight = 0.05f;
 	int  jumpState = 0;
 	float jumpSpeed = 9.0f;
 	float jumpTime = 0.75f;
@@ -63,28 +62,42 @@ public class GestureRecognizer : MonoBehaviour
     public Transform RightAnkle;
 	
 	//private float time;
-	//private bool  done;
+	private bool  done;
 	
 	void Start () 
 	{
-		script.SetUpVariables(maxChargeTime);
+
 	}
 	
 	void Update () 
 	{
-	/*	time += Time.deltaTime;
-		if(time > 3.0f && !done)
-		{
-			done = true;
-			jumpState = 1;
-			jumpStartTime = Time.time;
-		} */
-	
 		CheckForCharge();
 		CheckForPunch();
 		bool jump = CheckForJump(); 
 		if(!jump)
 			CheckForStomp();
+	}
+	
+	void testJump()
+	{
+		if(Time.time> 3.0f && !done)
+		{
+			done = true;
+			jumpState = 1;
+			jumpStartTime = Time.time;
+		} 
+	}
+	
+	void testPunch()
+	{
+		if(!done && ((int)Time.time % 2) == 0)
+		{
+			done = true;
+			script.leftChargeTime += Time.time;
+			script.PunchReceived(LeftWrist, true);
+		}
+		else if(((int)Time.time % 2) == 1)
+			done = false;
 	}
 	
 	public void NewUserFound()
@@ -113,11 +126,7 @@ public class GestureRecognizer : MonoBehaviour
 				script.StartedCharging();
 			}
 			script.leftChargeTime += Time.deltaTime/chargeTimeDivider;
-			if(script.leftChargeTime > maxChargeTime)
-				cript.leftChargeTime = maxChargeTime;
 			script.rightChargeTime += Time.deltaTime/chargeTimeDivider;
-			if(script.rightChargeTime > maxChargeTime)
-				cript.rightChargeTime = maxChargeTime;
 		}
 		else
 		{
@@ -187,6 +196,7 @@ public class GestureRecognizer : MonoBehaviour
 	
 	bool CheckForJump()
 	{	
+		script.UpdateUI(floorRootPosition.y, currentRootPosition.y);
 		switch(jumpState)
 		{
 			case(0):

@@ -4,14 +4,14 @@ using System.Collections;
 public class CharacterScript : MonoBehaviour {
 	
 	private int timesHit = 0;
-	private float ammo = 20.0f;
+	private float ammo = 0.0f;
 	public  float leftChargeTime = 0.0f;
 	public  float rightChargeTime = 0.0f;
 	
 	private bool      charging;
-	private float     prevChargeLeft = -1.0f;
-	private float     prevChargeRight = -1.0f;
-	private float 	  maxChargeTime;
+	private float     prevChargePercentLeft = 0.0f;
+	private float     prevChargePercentRight = 0.0f;
+	private float 	  maxChargeTime = 4.75f;
 	public GameObject leftChargingFire;
 	public GameObject leftChargedFire;
 	public GameObject rightChargingFire;
@@ -32,14 +32,14 @@ public class CharacterScript : MonoBehaviour {
 	
 	void Start () 
 	{
+		if(CoreLogicScript.difficulty == 0)
+			ammo += 200.0f;
+		else if(CoreLogicScript.difficulty == 1)
+			ammo += 20.0f;
+	
 		//script = statusTextBar.GetComponent<TextRenderScript>();
 		sources = gameObject.GetComponents<AudioSource>();
 		sources[0].pitch = 1.2f;
-		
-		leftChargingFire.SetActive(false);
-		leftChargedFire.SetActive(false);
-		rightChargingFire.SetActive(false);
-		rightChargedFire.SetActive(false);
 	}
 	
 	void Update () 
@@ -47,19 +47,19 @@ public class CharacterScript : MonoBehaviour {
 		UpdateUI();
 	}
 	
-	public void SetUpVariables(float inMaxChargeTime)
-	{
-		maxChargeTime = inMaxChargeTime;
-	}
-	
 	void OnTriggerEnter(Collider other)
 	{
   		if(other.gameObject != floor && other.gameObject != invisibleWall)
   		{
   			++timesHit;
-  			//--ammo;
-  			leftChargeTime = 0.0f;
-  			rightChargeTime = 0.0f;
+
+  			if(CoreLogicScript.difficulty > 1)
+  			{
+  				leftChargeTime = 0.0f;
+  				rightChargeTime = 0.0f;
+  				if(CoreLogicScript.difficulty > 2)
+  					--ammo;
+  			}
   			sources[0].Stop();
   			sources[0].Play();  			
   			Destroy(other.gameObject);
@@ -85,15 +85,19 @@ public class CharacterScript : MonoBehaviour {
 	public void StartedCharging()
 	{
 		charging = true;
-		leftChargingFire.SetActive(charging);
-		leftChargedFire.SetActive(!charging);
-		rightChargingFire.SetActive(charging);
-		rightChargedFire.SetActive(!charging);
+		ChangeVisibleFires();
 	}
 	
 	public void StoppedCharging()
 	{
 		charging = false;
+		prevChargePercentLeft = -1.0f;
+		prevChargePercentRight = -1.0f;
+		ChangeVisibleFires();
+	}
+	
+	private void ChangeVisibleFires()
+	{
 		leftChargingFire.SetActive(charging);
 		leftChargedFire.SetActive(!charging);
 		rightChargingFire.SetActive(charging);
@@ -102,54 +106,67 @@ public class CharacterScript : MonoBehaviour {
 	
 	private void adjustFires()
 	{
-		if(prevChargeLeft != leftChargeTime)
+		
+		float percentOfMaxLeft = Mathf.Min(ammo, leftChargeTime/maxChargeTime);
+		if(percentOfMaxLeft > 1.0f)
+				percentOfMaxLeft = 1.0f;
+		
+		if(prevChargePercentLeft != percentOfMaxLeft)
 		{
-			prevChargeLeft = leftChargeTime;
-			float percentOfMax = leftChargeTime/maxChargeTime;
-			
+			prevChargePercentLeft = percentOfMaxLeft;
 			if(charging)
 			{
-				GameObject outerCore = leftChargingFire.transform.Find("FireballOuterCore");
+				GameObject outerCore = leftChargingFire.transform.Find("FireballOuterCore").gameObject;
 				ParticleEmitter emitter = outerCore.GetComponent<ParticleEmitter>();
-				emitter.maxEmission = 20 + percentOfMax * 180;
-				emitter.angularVelocity = 55 + percentOfMax * 105;
+				emitter.maxEmission = 20 + percentOfMaxLeft * 180;
+				emitter.angularVelocity = 55 + percentOfMaxLeft * 105;
 			}
 			else
 			{
-				GameObject innerCore = leftChargedFire.transform.Find("InnerCore");
+				GameObject innerCore = leftChargedFire.transform.Find("InnerCore").gameObject;
 				ParticleEmitter emitter = innerCore.GetComponent<ParticleEmitter>();
-				emitter.minEmission = percentOfMax * 100;
-				emitter.maxEmission = percentOfMax * 100;
+				emitter.minEmission = percentOfMaxLeft * 100;
+				emitter.maxEmission = percentOfMaxLeft * 100;
 			}
 		}
-		if(prevChargeRight != rightChargeTime)
+		
+		float percentOfMaxRight = Mathf.Min(ammo, rightChargeTime/maxChargeTime);
+		if(percentOfMaxRight > 1.0f)
+				percentOfMaxRight = 1.0f;
+		
+		if(prevChargePercentRight != percentOfMaxRight)
 		{
-			prevChargeRight = rightChargeTime;
-			float percentOfMax = rightChargeTime/maxChargeTime;
+			prevChargePercentRight = percentOfMaxRight;
 			
 			if(charging)
 			{
-				GameObject outerCore = rightChargingFire.transform.Find("FireballOuterCore");
+				GameObject outerCore = rightChargingFire.transform.Find("FireballOuterCore").gameObject;
 				ParticleEmitter emitter = outerCore.GetComponent<ParticleEmitter>();
-				emitter.maxEmission = 20 + percentOfMax * 180;
-				emitter.angularVelocity = 55 + percentOfMax * 105;
+				emitter.maxEmission = 20 + percentOfMaxRight * 180;
+				emitter.angularVelocity = 55 + percentOfMaxRight * 105;
 			}
 			else
 			{
-				GameObject innerCore = rightChargedFire.transform.Find("InnerCore");
+				GameObject innerCore = rightChargedFire.transform.Find("InnerCore").gameObject;
 				ParticleEmitter emitter = innerCore.GetComponent<ParticleEmitter>();
-				emitter.minEmission = percentOfMax * 100;
-				emitter.maxEmission = percentOfMax * 100;
+				emitter.minEmission = percentOfMaxRight * 100;
+				emitter.maxEmission = percentOfMaxRight * 100;
 			}
 		}
 	}
 	
 	public void PunchReceived(Transform fistLocation, bool left)
 	{
-		if(ammo > 0)
+		float chargeTime = left ? leftChargeTime : rightChargeTime;
+		if(ammo > chargeTime)
 		{
-			--ammo;
+			ammo -= chargeTime;
 			LaunchBullet(CoreLogicScript.bulletVelocity, CoreLogicScript.bulletLifetime, fistLocation, left);
+		}
+		else
+		{
+			leftChargeTime = 0.0f;
+			rightChargeTime = 0.0f;
 		}
 	}
 	
@@ -159,36 +176,36 @@ public class CharacterScript : MonoBehaviour {
 		Vector3 wallRotation;
 		if(ammo >= 5)
 		{
-		ammo -= 5;
+			ammo -= 5;
 	//	if(angle < 22.5)
 	//	{
 			wallPosition = new Vector3(4.5f, 1.341022f, 0.0f);
 			wallRotation = new Vector3(0.0f, 90.0f, 0.0f);
-			GameObject wall0 = (GameObject)Instantiate(wallPrefab, wallPosition, Quaternion.Euler(wallRotation.x, wallRotation.y, wallRotation.z));
+			Instantiate(wallPrefab, wallPosition, Quaternion.Euler(wallRotation.x, wallRotation.y, wallRotation.z));
 	//	}
 	//	else if(angle >= 22.5 && angle < 67.5)
 	//	{
 			wallPosition = new Vector3(3.5f, 1.341022f, -3.5f);
 			wallRotation = new Vector3(0.0f, -45.0f, 0.0f);
-			GameObject wall1 = (GameObject)Instantiate(wallPrefab, wallPosition, Quaternion.Euler(wallRotation.x, wallRotation.y, wallRotation.z));
+			Instantiate(wallPrefab, wallPosition, Quaternion.Euler(wallRotation.x, wallRotation.y, wallRotation.z));
 	//	}
 	//	else if(angle >= 67.5 && angle < 112.5)
 	//	{
 			wallPosition = new Vector3(0.0f, 1.341022f, -4.5f);
 			wallRotation = new Vector3(0.0f, 0.0f, 0.0f);
-			GameObject wall2 = (GameObject)Instantiate(wallPrefab, wallPosition, Quaternion.Euler(wallRotation.x, wallRotation.y, wallRotation.z));
+			Instantiate(wallPrefab, wallPosition, Quaternion.Euler(wallRotation.x, wallRotation.y, wallRotation.z));
 	//	}
 	//	else if(angle >= 112.5 && angle < 157.5)
 	//	{
 			wallPosition = new Vector3(-3.5f, 1.341022f, -3.5f);
 			wallRotation = new Vector3(0.0f, 45.0f, 0.0f);
-			GameObject wall3 = (GameObject)Instantiate(wallPrefab, wallPosition, Quaternion.Euler(wallRotation.x, wallRotation.y, wallRotation.z));
+			Instantiate(wallPrefab, wallPosition, Quaternion.Euler(wallRotation.x, wallRotation.y, wallRotation.z));
 	//	}
 	//	else
 	//	{
 			wallPosition = new Vector3(-4.5f, 1.341022f, 0.0f);
 			wallRotation = new Vector3(0.0f, 90.0f, 0.0f);
-			GameObject wall4 = (GameObject)Instantiate(wallPrefab, wallPosition, Quaternion.Euler(wallRotation.x, wallRotation.y, wallRotation.z));
+			Instantiate(wallPrefab, wallPosition, Quaternion.Euler(wallRotation.x, wallRotation.y, wallRotation.z));
 	//	}
 	}
 		
@@ -206,15 +223,15 @@ public class CharacterScript : MonoBehaviour {
 		if(left)
 			trueForward *= -1;
 		
-		float chargeTime = left ? leftChargeTime : rightChargeTime;	
+		float chargeTime = left ? leftChargeTime : rightChargeTime;
+		if(chargeTime > maxChargeTime)
+			chargeTime = maxChargeTime;	
 		
-		Vector3 initLocation = fistLocation.position + trueForward.normalized;
-		initLocation += trueForward.normalized * chargeTime;
+		Vector3 initLocation = fistLocation.position + trueForward.normalized * 0.4f; //* (chargeTime + 0.25f)/2.0f;
 		
 		GameObject fireball = (GameObject)Instantiate(bulletPrefab, initLocation, Quaternion.identity);
 		FireballProperties fireballScript = fireball.GetComponent<FireballProperties>();
 		fireballScript.ScaleToChargeTime(chargeTime);
-		ammo -= chargeTime;
 		
 		if(left)
 			leftChargeTime = 0.0f;
@@ -229,8 +246,8 @@ public class CharacterScript : MonoBehaviour {
 	public void UpdateUI()
 	{
 		adjustFires();
-		hitTextBar.GetComponent<TextMesh>().text = "Hits: " + timesHit;
-  		blockTextBar.GetComponent<TextMesh>().text = "Energy: " + ammo.ToString("0.00");
-  		chargeTextBar.GetComponent<TextMesh>().text = "L: " + leftChargeTime.ToString("0.00") + "R: " + rightChargeTime.ToString("0.00");
+	//	hitTextBar.GetComponent<TextMesh>().text = "Hits: " + timesHit;
+  	//	blockTextBar.GetComponent<TextMesh>().text = "Energy: " + ammo.ToString("0.00");
+  	//	chargeTextBar.GetComponent<TextMesh>().text = "L: " + Mathf.Min(leftChargeTime, maxChargeTime).ToString("0.00") + " R: " + Mathf.Min(rightChargeTime, maxChargeTime).ToString("0.00");
 	}
 }

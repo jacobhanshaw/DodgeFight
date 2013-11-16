@@ -21,4 +21,11 @@ public class ImpactBehavior : MonoBehaviour
 		if(wallHealth == 0)
 			Destroy(gameObject);
 	}
+	
+	void OnTriggerEnter(Collider other)
+	{
+		--wallHealth;
+		if(wallHealth == 0)
+			Destroy(gameObject);
+	}
 }

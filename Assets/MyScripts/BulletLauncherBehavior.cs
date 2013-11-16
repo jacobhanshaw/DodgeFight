@@ -4,6 +4,7 @@ using System.Collections;
 public class BulletLauncherBehavior : MonoBehaviour 
 {	
 	public  bool  controlled = true;
+	public  bool  destroyed = false;
 	public  float bulletVelocityLocal = 250.0f;
 	public  float bulletLifetimeLocal = 2.0f;
 	public  float timeBetweenLaunches = 5.0f;
@@ -48,8 +49,28 @@ public class BulletLauncherBehavior : MonoBehaviour
 			}
 		} 
 		
+		destroy();
+	}
+	
+	void OnCollisionEnter(Collision collision) 
+	{
+		if(collision.gameObject.tag.Equals("Bullet"))
+		{
+			BulletProperties bulletScript = collision.gameObject.GetComponent<BulletProperties>();
+			if(bulletScript)
+			{
+				if(bulletScript.creatorId == gameObject.GetInstanceID())
+					return;
+			}
+		} 
+	
+		destroy();
+	}
+	
+	void destroy()
+	{
 		GameObject fire = (GameObject)Instantiate(destructionBurnPrefab, gameObject.transform.position, Quaternion.identity);
-		
+		destroyed = true;
   		Destroy(gameObject, boxTime);
   		Destroy(fire, burnTime);
 	}

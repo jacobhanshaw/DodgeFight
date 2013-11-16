@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CoreLogic : MonoBehaviour {
 	
+	public int   difficulty = 0;
 	public int   level = 2;
 	public bool  staggered = true;
 	public float timeBetweenLaunches = 3.0f;
@@ -37,7 +38,7 @@ public class CoreLogic : MonoBehaviour {
 			{
 				++level;
 				staggered = level % 2 == 0;
-				GameObject launcherObjects = (GameObject)Instantiate(launchersPrefab, Vector3.zero, Quaternion.identity);
+				Instantiate(launchersPrefab, Vector3.zero, Quaternion.identity);
 				script.allowTextToDisappear = true;
   				script.DisplayText("Welcome to Level: " + (level - 1));
 			}
@@ -50,9 +51,14 @@ public class CoreLogic : MonoBehaviour {
 		
 				for(int i = 0; i < (staggered ? 1 : numToLaunch); ++i)
 				{
+					if(launchers.Count == 0)
+						break;
 					int launcherIndex = Random.Range(0, launchers.Count);
 					BulletLauncherBehavior launchScript = ((GameObject)launchers[launcherIndex]).GetComponent<BulletLauncherBehavior>();
-					launchScript.LaunchBullet(bulletVelocity, bulletLifetime);
+					if(!launchScript.destroyed)
+						launchScript.LaunchBullet(bulletVelocity, bulletLifetime);
+					else
+						--i;
 					launchers.Remove(launcherIndex);
 				}
 			}

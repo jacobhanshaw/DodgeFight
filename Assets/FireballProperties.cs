@@ -14,10 +14,14 @@ public class FireballProperties : MonoBehaviour
 	private float collisionScaleAmount = 0.5f;
 	private int   collisionFireballSpawnAmount = 5;
 	
-	void Start ()
+	void Awake ()
 	{
 		originalScale = gameObject.transform.localScale.x;
 		newScale = gameObject.transform.localScale;
+	}
+	
+	void Start ()
+	{
 		emitters = gameObject.GetComponentsInChildren<ParticleEmitter> ();
 		originalMinSize = new float[emitters.Length];
 		originalMaxSize = new float[emitters.Length];
@@ -36,8 +40,6 @@ public class FireballProperties : MonoBehaviour
 	
 	void Update ()
 	{
-		//gameObject.rigidbody.AddForce(-50 * gameObject.transform.forward.normalized);
-		
 		if (gameObject.transform.localScale.x != newScale.x)
 			UpdateScale ();
 	}
@@ -59,7 +61,6 @@ public class FireballProperties : MonoBehaviour
 			ScaleToChargeTime (gameObject.transform.localScale.x - collisionScaleAmount - originalScale);
 		else
 			Destroy (gameObject);
-			
 	}
 	
 	void AnimateCollision ()
@@ -73,7 +74,7 @@ public class FireballProperties : MonoBehaviour
 			Vector3 force = position * 1200;
 			GameObject fireball = (GameObject)Instantiate (gameObject, gameObject.transform.position + position, Quaternion.identity);
 			fireball.transform.localScale = scale;
-			FireballProperties fireballScript = fireball.GetComponent<FireballProperties>();
+		//	FireballProperties fireballScript = fireball.GetComponent<FireballProperties>();
 			Destroy(fireball.collider);
 			fireball.rigidbody.useGravity = true;
 			fireball.rigidbody.AddForce (force);
@@ -99,6 +100,6 @@ public class FireballProperties : MonoBehaviour
 			emitter.maxSize = Mathf.Lerp (emitter.maxSize, originalMaxSize [i] + chargeTime, Time.deltaTime);
 			emitter.minEmission = Mathf.Lerp (emitter.minEmission, originalMinEmission [i] + (chargeTime * 100), Time.deltaTime);
 			emitter.maxEmission = Mathf.Lerp (emitter.maxEmission, originalMaxEmission [i] + (chargeTime * 100), Time.deltaTime);
-		}
+		} 
 	}
 }
