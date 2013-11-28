@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BulletLauncherBehavior : MonoBehaviour 
+public class BulletLauncherBehavior : MonoBehaviour
 {	
 	public  bool  controlled = true;
 	public  bool  destroyed = false;
@@ -17,71 +17,64 @@ public class BulletLauncherBehavior : MonoBehaviour
 	public  GameObject destructionBurnPrefab;
 	
 	
-	void Start () 
+	void Start ()
 	{
 
 	}
 	
-	void Update () 
+	void Update ()
 	{
-		if(!controlled)
-		{
+		if (!controlled) {
 			timeSinceLastLaunch += Time.deltaTime;
 			
-			if(timeSinceLastLaunch > timeBetweenLaunches)
-			{
+			if (timeSinceLastLaunch > timeBetweenLaunches) {
 				timeSinceLastLaunch = 0.0f;
 				
-				LaunchBullet(bulletVelocityLocal, bulletLifetimeLocal);
+				LaunchBullet (bulletVelocityLocal, bulletLifetimeLocal);
 			}
 		}
 	}
 	
-	void OnTriggerEnter(Collider other)
+	void OnTriggerEnter (Collider other)
 	{
-		if(other.gameObject.tag.Equals("Bullet"))
-		{
-			BulletProperties bulletScript = other.gameObject.GetComponent<BulletProperties>();
-			if(bulletScript)
-			{
-				if(bulletScript.creatorId == gameObject.GetInstanceID())
+		if (other.gameObject.tag.Equals ("Bullet")) {
+			BulletProperties bulletScript = other.gameObject.GetComponent<BulletProperties> ();
+			if (bulletScript) {
+				if (bulletScript.creatorId == gameObject.GetInstanceID ())
 					return;
 			}
 		} 
 		
-		destroy();
+		destroy ();
 	}
 	
-	void OnCollisionEnter(Collision collision) 
+	void OnCollisionEnter (Collision collision)
 	{
-		if(collision.gameObject.tag.Equals("Bullet"))
-		{
-			BulletProperties bulletScript = collision.gameObject.GetComponent<BulletProperties>();
-			if(bulletScript)
-			{
-				if(bulletScript.creatorId == gameObject.GetInstanceID())
+		if (collision.gameObject.tag.Equals ("Bullet")) {
+			BulletProperties bulletScript = collision.gameObject.GetComponent<BulletProperties> ();
+			if (bulletScript) {
+				if (bulletScript.creatorId == gameObject.GetInstanceID ())
 					return;
 			}
 		} 
 	
-		destroy();
+		destroy ();
 	}
 	
-	void destroy()
+	void destroy ()
 	{
-		GameObject fire = (GameObject)Instantiate(destructionBurnPrefab, gameObject.transform.position, Quaternion.identity);
+		GameObject fire = (GameObject)Instantiate (destructionBurnPrefab, gameObject.transform.position, Quaternion.identity);
 		destroyed = true;
-  		Destroy(gameObject, boxTime);
-  		Destroy(fire, burnTime);
+		Destroy (gameObject, boxTime);
+		Destroy (fire, burnTime);
 	}
 	
-	public void LaunchBullet(float bulletVelocity, float bulletLifetime)
+	public void LaunchBullet (float bulletVelocity, float bulletLifetime)
 	{
-		GameObject bullet = (GameObject)Instantiate(bulletPrefab, gameObject.transform.position, gameObject.transform.rotation);
-		Physics.IgnoreCollision(gameObject.collider, bullet.collider);
-		BulletProperties script = bullet.GetComponent<BulletProperties>();
-		script.creatorId = gameObject.GetInstanceID();
-		bullet.rigidbody.AddForce(gameObject.transform.forward * bulletVelocity);
-		Destroy(bullet, bulletLifetime);
+		GameObject bullet = (GameObject)Instantiate (bulletPrefab, gameObject.transform.position, gameObject.transform.rotation);
+		BulletProperties script = bullet.GetComponent<BulletProperties> ();
+		script.creatorId = gameObject.GetInstanceID ();
+		bullet.rigidbody.AddForce (gameObject.transform.forward * bulletVelocity);
+		Destroy (bullet, bulletLifetime);
 	}
 }

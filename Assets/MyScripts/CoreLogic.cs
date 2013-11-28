@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CoreLogic : MonoBehaviour {
+public class CoreLogic : MonoBehaviour
+{
 	
 	public int   difficulty = 0;
 	public int   level = 2;
@@ -20,53 +21,43 @@ public class CoreLogic : MonoBehaviour {
 	
 	
 	// Use this for initialization
-	void Start () 
-	{
-	
-	}
+//	void Start () 	{}
 	
 	// Update is called once per frame
-	void Update () 
+	void Update ()
 	{	
 		timeSinceLastLaunch += Time.deltaTime;
 		
-		if(waitedInitialDelay)
-		{
-			ArrayList launchers = new ArrayList(GameObject.FindGameObjectsWithTag ("Launcher"));
+		if (waitedInitialDelay) {
+			ArrayList launchers = new ArrayList (GameObject.FindGameObjectsWithTag ("Launcher"));
 			
-			if(launchers.Count == 0)
-			{
+			if (launchers.Count == 0) {
 				++level;
 				staggered = level % 2 == 0;
-				Instantiate(launchersPrefab, Vector3.zero, Quaternion.identity);
+				Instantiate (launchersPrefab, Vector3.zero, Quaternion.identity);
 				script.allowTextToDisappear = true;
-  				script.DisplayText("Welcome to Level: " + (level - 1));
+				script.DisplayText ("Welcome to Level: " + (level - 1));
 			}
 			
-			int numToLaunch = Mathf.Min(level, launchers.Count);
+			int numToLaunch = Mathf.Min (level, launchers.Count);
 			
-			if(timeSinceLastLaunch > timeBetweenLaunches || (staggered && timeSinceLastLaunch > timeBetweenLaunches/(float)numToLaunch))
-			{
+			if (timeSinceLastLaunch > timeBetweenLaunches || (staggered && timeSinceLastLaunch > timeBetweenLaunches / (float)numToLaunch)) {
 				timeSinceLastLaunch = 0.0f;
 		
-				for(int i = 0; i < (staggered ? 1 : numToLaunch); ++i)
-				{
-					if(launchers.Count == 0)
+				for (int i = 0; i < (staggered ? 1 : numToLaunch); ++i) {
+					if (launchers.Count == 0)
 						break;
-					int launcherIndex = Random.Range(0, launchers.Count);
-					BulletLauncherBehavior launchScript = ((GameObject)launchers[launcherIndex]).GetComponent<BulletLauncherBehavior>();
-					if(!launchScript.destroyed)
-						launchScript.LaunchBullet(bulletVelocity, bulletLifetime);
+					int launcherIndex = Random.Range (0, launchers.Count);
+					BulletLauncherBehavior launchScript = ((GameObject)launchers [launcherIndex]).GetComponent<BulletLauncherBehavior> ();
+					if (!launchScript.destroyed)
+						launchScript.LaunchBullet (bulletVelocity, bulletLifetime);
 					else
 						--i;
-					launchers.Remove(launcherIndex);
+					launchers.Remove (launcherIndex);
 				}
 			}
-		}
-		else
-		{
-			if(timeSinceLastLaunch > initialDelayTime)
-			{
+		} else {
+			if (timeSinceLastLaunch > initialDelayTime) {
 				timeSinceLastLaunch = 0.0f;
 				waitedInitialDelay = true;
 			}
