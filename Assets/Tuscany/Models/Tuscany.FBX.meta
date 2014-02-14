@@ -1307,6 +1307,24 @@ ModelImporter:
     102602: DistantMatte_07
     102604: DistantMatte_08
     102606: Ocean
+    102608: Terrain_yardGround
+    102610: Plants
+    102612: Grass_single
+    102614: Water_wave
+    102616: FountainWater_wave
+    102618: Wheelbarrel
+    102620: Bone01
+    102622: Bone02
+    102624: Bone03
+    102626: Bone04
+    102628: Bone05
+    102630: Bone06
+    102632: Bone07
+    102634: Bone08
+    102636: Bone09
+    102638: Bone10
+    102640: Bone11
+    102642: Tapestry
     400000: baseboard
     400002: bench_01
     400004: book_01
@@ -2611,6 +2629,24 @@ ModelImporter:
     402602: DistantMatte_07
     402604: DistantMatte_08
     402606: Ocean
+    402608: Terrain_yardGround
+    402610: Plants
+    402612: Grass_single
+    402614: Water_wave
+    402616: FountainWater_wave
+    402618: Wheelbarrel
+    402620: Bone01
+    402622: Bone02
+    402624: Bone03
+    402626: Bone04
+    402628: Bone05
+    402630: Bone06
+    402632: Bone07
+    402634: Bone08
+    402636: Bone09
+    402638: Bone10
+    402640: Bone11
+    402642: Tapestry
     2300000: baseboard
     2300002: bench_01
     2300004: book_01
@@ -3868,6 +3904,13 @@ ModelImporter:
     2302508: DistantMatte_07
     2302510: DistantMatte_08
     2302512: Ocean
+    2302514: Terrain_yardGround
+    2302516: Plants
+    2302518: Grass_single
+    2302520: Water_wave
+    2302522: FountainWater_wave
+    2302524: Wheelbarrel
+    2302526: Tapestry
     3300000: baseboard
     3300002: bench_01
     3300004: book_01
@@ -5125,6 +5168,13 @@ ModelImporter:
     3302508: DistantMatte_07
     3302510: DistantMatte_08
     3302512: Ocean
+    3302514: Terrain_yardGround
+    3302516: Plants
+    3302518: Grass_single
+    3302520: Water_wave
+    3302522: FountainWater_wave
+    3302524: Wheelbarrel
+    3302526: Tapestry
     4300000: house_exterior
     4300002: Box02
     4300004: Box03
@@ -6382,8 +6432,16 @@ ModelImporter:
     4302508: DistantMatte_06
     4302510: DistantMatte_07
     4302512: DistantMatte_08
+    4302514: Terrain_yardGround
+    4302516: Plants
+    4302518: Grass_single
+    4302520: Water_wave
+    4302522: FountainWater_wave
+    4302524: Wheelbarrel
+    4302526: Tapestry
     7400000: Take 001
     9500000: //RootNode
+    13700000: Tapestry
   materials:
     importMaterials: 1
     materialName: 0
@@ -6434,5 +6492,5 @@ ModelImporter:
     feetSpacing: 0
     rootMotionBoneName: 
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   userData: 

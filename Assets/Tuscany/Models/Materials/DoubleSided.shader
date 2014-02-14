@@ -12,7 +12,7 @@ Shader "DoubleSided" {
 SubShader {
 
     Blend SrcAlpha OneMinusSrcAlpha
-
+    
     Cull Off
 
    
@@ -53,5 +53,5 @@ SubShader {
 
  
 
-Fallback "Transparent/VertexLit"
+Fallback "Diffuse"
 }

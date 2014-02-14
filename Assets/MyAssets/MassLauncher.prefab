@@ -11,7 +11,7 @@ GameObject:
   - 33: {fileID: 3300000}
   - 23: {fileID: 2300000}
   - 65: {fileID: 6500000}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,7 +29,7 @@ GameObject:
   - 33: {fileID: 3300002}
   - 23: {fileID: 2300002}
   - 65: {fileID: 6500002}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,7 +47,7 @@ GameObject:
   - 33: {fileID: 3300006}
   - 23: {fileID: 2300006}
   - 65: {fileID: 6500004}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65,7 +65,7 @@ GameObject:
   - 33: {fileID: 3300004}
   - 23: {fileID: 2300004}
   - 65: {fileID: 6500006}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,7 +83,7 @@ GameObject:
   - 33: {fileID: 3300008}
   - 23: {fileID: 2300008}
   - 65: {fileID: 6500008}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400010}
   - 114: {fileID: 11400014}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MassLauncher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,7 +116,7 @@ GameObject:
   - 4: {fileID: 400012}
   - 65: {fileID: 6500010}
   - 114: {fileID: 11400000}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BulletLauncher
   m_TagString: Launcher
   m_Icon: {fileID: 0}
@@ -134,7 +134,7 @@ GameObject:
   - 33: {fileID: 3300010}
   - 23: {fileID: 2300010}
   - 65: {fileID: 6500012}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,7 +152,7 @@ GameObject:
   - 33: {fileID: 3300012}
   - 23: {fileID: 2300012}
   - 65: {fileID: 6500014}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -170,7 +170,7 @@ GameObject:
   - 33: {fileID: 3300014}
   - 23: {fileID: 2300014}
   - 65: {fileID: 6500016}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -188,7 +188,7 @@ GameObject:
   - 33: {fileID: 3300016}
   - 23: {fileID: 2300016}
   - 65: {fileID: 6500018}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,7 +206,7 @@ GameObject:
   - 33: {fileID: 3300018}
   - 23: {fileID: 2300018}
   - 65: {fileID: 6500020}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -224,7 +224,7 @@ GameObject:
   - 33: {fileID: 3300020}
   - 23: {fileID: 2300020}
   - 65: {fileID: 6500022}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -242,7 +242,7 @@ GameObject:
   - 33: {fileID: 3300022}
   - 23: {fileID: 2300022}
   - 65: {fileID: 6500024}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +260,7 @@ GameObject:
   - 33: {fileID: 3300024}
   - 23: {fileID: 2300024}
   - 65: {fileID: 6500026}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -278,7 +278,7 @@ GameObject:
   - 33: {fileID: 3300026}
   - 23: {fileID: 2300026}
   - 65: {fileID: 6500028}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -295,7 +295,7 @@ GameObject:
   - 4: {fileID: 400032}
   - 65: {fileID: 6500030}
   - 114: {fileID: 11400002}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BulletLauncher
   m_TagString: Launcher
   m_Icon: {fileID: 0}
@@ -313,7 +313,7 @@ GameObject:
   - 33: {fileID: 3300028}
   - 23: {fileID: 2300028}
   - 65: {fileID: 6500032}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -331,7 +331,7 @@ GameObject:
   - 33: {fileID: 3300030}
   - 23: {fileID: 2300030}
   - 65: {fileID: 6500034}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -349,7 +349,7 @@ GameObject:
   - 33: {fileID: 3300032}
   - 23: {fileID: 2300032}
   - 65: {fileID: 6500036}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -367,7 +367,7 @@ GameObject:
   - 33: {fileID: 3300034}
   - 23: {fileID: 2300034}
   - 65: {fileID: 6500038}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -385,7 +385,7 @@ GameObject:
   - 33: {fileID: 3300036}
   - 23: {fileID: 2300036}
   - 65: {fileID: 6500040}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -402,7 +402,7 @@ GameObject:
   - 4: {fileID: 400044}
   - 65: {fileID: 6500042}
   - 114: {fileID: 11400004}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BulletLauncher
   m_TagString: Launcher
   m_Icon: {fileID: 0}
@@ -419,7 +419,7 @@ GameObject:
   - 4: {fileID: 400046}
   - 65: {fileID: 6500044}
   - 114: {fileID: 11400006}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BulletLauncher
   m_TagString: Launcher
   m_Icon: {fileID: 0}
@@ -437,7 +437,7 @@ GameObject:
   - 33: {fileID: 3300038}
   - 23: {fileID: 2300038}
   - 65: {fileID: 6500046}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -454,7 +454,7 @@ GameObject:
   - 4: {fileID: 400070}
   - 65: {fileID: 6500068}
   - 114: {fileID: 11400012}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BulletLauncher
   m_TagString: Launcher
   m_Icon: {fileID: 0}
@@ -1644,10 +1644,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controlled: 1
-  destroyed: 0
   bulletVelocityLocal: 250
   bulletLifetimeLocal: 2
   timeBetweenLaunches: 2
+  destroyed: 0
   bulletPrefab: {fileID: 100000, guid: 42c5f229aee7844ae953e75d83191fb3, type: 2}
   destructionBurnPrefab: {fileID: 100006, guid: 0b95781f12e364282812d2c5bfd26b35,
     type: 2}
@@ -1663,10 +1663,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controlled: 1
-  destroyed: 0
   bulletVelocityLocal: 250
   bulletLifetimeLocal: 2
   timeBetweenLaunches: 2
+  destroyed: 0
   bulletPrefab: {fileID: 100000, guid: 42c5f229aee7844ae953e75d83191fb3, type: 2}
   destructionBurnPrefab: {fileID: 100006, guid: 0b95781f12e364282812d2c5bfd26b35,
     type: 2}
@@ -1682,10 +1682,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controlled: 1
-  destroyed: 0
   bulletVelocityLocal: 250
   bulletLifetimeLocal: 2
   timeBetweenLaunches: 2
+  destroyed: 0
   bulletPrefab: {fileID: 100000, guid: 42c5f229aee7844ae953e75d83191fb3, type: 2}
   destructionBurnPrefab: {fileID: 100006, guid: 0b95781f12e364282812d2c5bfd26b35,
     type: 2}
@@ -1701,10 +1701,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controlled: 1
-  destroyed: 0
   bulletVelocityLocal: 250
   bulletLifetimeLocal: 2
   timeBetweenLaunches: 2
+  destroyed: 0
   bulletPrefab: {fileID: 100000, guid: 42c5f229aee7844ae953e75d83191fb3, type: 2}
   destructionBurnPrefab: {fileID: 100006, guid: 0b95781f12e364282812d2c5bfd26b35,
     type: 2}
@@ -1720,10 +1720,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controlled: 1
-  destroyed: 0
   bulletVelocityLocal: 250
   bulletLifetimeLocal: 2
   timeBetweenLaunches: 2
+  destroyed: 0
   bulletPrefab: {fileID: 100000, guid: 42c5f229aee7844ae953e75d83191fb3, type: 2}
   destructionBurnPrefab: {fileID: 100006, guid: 0b95781f12e364282812d2c5bfd26b35,
     type: 2}

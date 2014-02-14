@@ -5,8 +5,6 @@ public class GestureRecognizer : MonoBehaviour
 {
 		public CharacterScript script;
 	
-		private bool newUser;
-	
 		//PUNCH VARIABLES
 		int punchStateLeft = 0;
 		float punchLeftStartTime = 0;
@@ -20,16 +18,6 @@ public class GestureRecognizer : MonoBehaviour
 		bool  wasCharging;
 		float chargeTimeDivider = 3.0f;
 		float chargeHandDistance = 0.24f * 0.24f;
-	
-		//JUMP VARIABLES
-		Vector3 floorRootPosition;
-		Vector3 currentRootPosition;
-		float jumpStartTime = 0.0f;
-		float minJumpHeight = 0.05f;
-		int  jumpState = 0;
-		float jumpSpeed = 9.0f;
-		float jumpTime = 0.75f;
-		float hangTime = 3.0f;
 	
 		//STOMP VARIABLES
 		int stompStateLeft = 0;
@@ -60,31 +48,45 @@ public class GestureRecognizer : MonoBehaviour
 		public Transform RightHip;
 		public Transform RightKnee;
 		public Transform RightAnkle;
-	
+		
 		//private float time;
+		
+		private bool stompLeft;
+		private bool stompRight;
+		private float stompToJumpStartTime;
+		private float maxStompToJumpWaitTime = 0.5f;
+		
 		private bool  done;
-	
-		void Start ()
-		{
-
-		}
 	
 		void Update ()
 		{
 				CheckForCharge ();
 				CheckForPunch ();
-				//bool jump = CheckForJump (); 
-				//if (!jump)
-				CheckForStomp ();
-		}
-	
-		void testJump ()
-		{
-				if (Time.time > 3.0f && !done) {
-						done = true;
-						jumpState = 1;
-						jumpStartTime = Time.time;
-				} 
+
+				bool newStompLeft = CheckForStomp (true);
+				bool newStompRight = CheckForStomp (false);
+				
+				if (newStompLeft && !stompLeft) {
+						stompLeft = true;
+						stompToJumpStartTime = Time.time;
+				}
+				
+				if (newStompRight && !stompRight) {
+						stompRight = true;
+						stompToJumpStartTime = Time.time;
+				}
+				
+				if (stompLeft && stompRight) {
+						stompLeft = false;
+						stompRight = false;
+						script.JumpReceived ();		
+				} else if (stompLeft && Time.time - stompToJumpStartTime > maxStompToJumpWaitTime) {
+						stompLeft = false;
+						script.StompReceived (LeftAnkle);
+				} else if (stompRight && Time.time - stompToJumpStartTime > maxStompToJumpWaitTime) {
+						stompRight = false;
+						script.StompReceived (RightAnkle);
+				}					
 		}
 	
 		void testPunch ()
@@ -95,21 +97,6 @@ public class GestureRecognizer : MonoBehaviour
 						script.PunchReceived (LeftWrist, true);
 				} else if (((int)Time.time % 2) == 1)
 						done = false;
-		}
-	
-		public void NewUserFound ()
-		{
-				newUser = true;
-		}
-	
-		public void RootUpdate (Vector3 rootPosition)
-		{
-				if (newUser) {
-						newUser = false;
-						floorRootPosition = rootPosition;
-				}
-		
-				currentRootPosition = rootPosition;
 		}
 	
 		void CheckForCharge ()
@@ -175,83 +162,53 @@ public class GestureRecognizer : MonoBehaviour
 				}
 		}
 	
-		bool CheckForJump ()
-		{	
-				//script.UpdateUI(floorRootPosition.y, currentRootPosition.y);
-				switch (jumpState) {
-				case(0):
-						if (currentRootPosition.y - floorRootPosition.y > minJumpHeight) {
-								jumpStartTime = Time.time;
-								transform.position += transform.up * jumpSpeed * Time.deltaTime;
-								++jumpState;
-						}
-						break;
-				case(1):
-						if (Time.time - jumpStartTime < jumpTime) {
-								transform.position += transform.up * jumpSpeed * Time.deltaTime;
-						} else
-								++jumpState;
-						break;
-				case(2):
-						if (!(Time.time - jumpStartTime < jumpTime + hangTime))
-								++jumpState;
-						break;
-				case(3):
-						if (Time.time - jumpStartTime < 2 * jumpTime + hangTime) {
-								transform.position -= transform.up * jumpSpeed * Time.deltaTime;
-						} else {
-								jumpState = 0;
-								transform.position = transform.up * floorRootPosition.y;	
-						}
-						break;
-				}
-		
-				return jumpState != 0;
-		}
-	
-		void CheckForStomp ()
+		bool CheckForStomp (bool left)
 		{
 				float leftHipAnkleDistanceSquared = GetDistanceSquared (LeftHip.transform, LeftAnkle.transform);
 				float rightHipAnkleDistanceSquared = GetDistanceSquared (RightHip.transform, RightAnkle.transform);
-		
-				switch (stompStateLeft) {
-				case(0):
-						if (leftHipAnkleDistanceSquared < startLegDistance) {
-								stompLeftStartTime = Time.time;
-								++stompStateLeft;
-						}
-						break;
-				case(1):
-						if (Time.time - stompLeftStartTime <= maxStompTime) {
-								if (leftHipAnkleDistanceSquared < startLegDistance)
+				if (left) {
+						switch (stompStateLeft) {
+						case(0):
+								if (leftHipAnkleDistanceSquared < startLegDistance) {
 										stompLeftStartTime = Time.time;
-								else if (leftHipAnkleDistanceSquared > stopLegDistance) {
+										++stompStateLeft;
+								}
+								break;
+						case(1):
+								if (Time.time - stompLeftStartTime <= maxStompTime) {
+										if (leftHipAnkleDistanceSquared < startLegDistance)
+												stompLeftStartTime = Time.time;
+										else if (leftHipAnkleDistanceSquared > stopLegDistance) {
+												stompStateLeft = 0;
+												return true;
+												;
+										}
+								} else
 										stompStateLeft = 0;
-										script.StompReceived (LeftAnkle);
-								}
-						} else
-								stompStateLeft = 0;
-						break;
-				}
-		
-				switch (stompStateRight) {
-				case(0):
-						if (rightHipAnkleDistanceSquared < startLegDistance) {
-								stompRightStartTime = Time.time;
-								++stompStateRight;
+								break;
 						}
-						break;
-				case(1):
-						if (Time.time - stompRightStartTime <= maxStompTime) {
-								if (rightHipAnkleDistanceSquared < startLegDistance)
+						return false;
+				} else {
+						switch (stompStateRight) {
+						case(0):
+								if (rightHipAnkleDistanceSquared < startLegDistance) {
 										stompRightStartTime = Time.time;
-								else if (rightHipAnkleDistanceSquared > stopLegDistance) {
-										stompStateRight = 0;
-										script.StompReceived (RightAnkle);
+										++stompStateRight;
 								}
-						} else
-								stompStateRight = 0;
-						break;
+								break;
+						case(1):
+								if (Time.time - stompRightStartTime <= maxStompTime) {
+										if (rightHipAnkleDistanceSquared < startLegDistance)
+												stompRightStartTime = Time.time;
+										else if (rightHipAnkleDistanceSquared > stopLegDistance) {
+												stompStateRight = 0;
+												return true;
+										}
+								} else
+										stompStateRight = 0;
+								break;
+						}
+						return false;
 				}
 		}
 	
